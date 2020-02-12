@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>DarwinBot</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href= "{{ url_for('static', filename='css/style.css') }}" >
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="chat-output" id="chat-output">
+  <div class="user-message">
+    <div class="message">Hi {{name}}</div>
+  </div>
+</div>
+
+<div class="chat-input">
+
+    <input type="text" id="user-input" class="user-input" placeholder="Talk to the bot." >
+    <button type="button" id="button">submit</button>
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
+  <script src = "{{ url_for('static', filename='js/script_bot.js') }}"></script>
+
+</body>
+</html>
