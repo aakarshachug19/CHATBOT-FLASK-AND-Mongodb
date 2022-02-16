@@ -5,12 +5,12 @@ import json
 from flask import jsonify
 import random
 from pprint import pprint
-
+import certifi
 
 app = Flask(__name__)
 
 
-client = pymongo.MongoClient("mongodb+srv://aakarshachug:aakarsha123@cluster0-qtf6n.mongodb.net/test?retryWrites=true&w=majority")
+client = pymongo.MongoClient("mongodb+srv://aakarshachug:password@cluster0-qtf6n.mongodb.net/test?retryWrites=true&w=majority",tlsCAFile=certifi.where())
 db = client.chatbot
 
 @app.route('/')
@@ -21,7 +21,7 @@ def index():
 
     return render_template('index.html')
 
-@app.route('/login', methods=['POST','GET'])
+@app.route('/login', methods=['POST','GET'])  
 def login():
     users = db.login_details
     login_user = users.find_one({'name' : request.form['username']})
@@ -45,7 +45,7 @@ def register():
         if existing_user is None:
             #hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
             hashpass = bcrypt.hashpw(request.form['pass'].encode('utf8'), bcrypt.gensalt())
-            users.insert({'name' : request.form['username'], 'password' : hashpass})
+            users.insert_one({'name' : request.form['username'], 'password' : hashpass})
             session['username'] = request.form['username']
             return redirect(url_for('index'))
         
@@ -87,7 +87,7 @@ def botresponse():
             history.update_one({'username' : s} , { "$push": {"user" : answer , "bot" : r}})
             
         else:
-            history.insert({"username" : s ,"user" : [answer] , "bot" : [r]})
+            history.insert_one({"username" : s ,"user" : [answer] , "bot" : [r]})
 
         
 
